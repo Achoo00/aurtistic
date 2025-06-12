@@ -1,0 +1,29 @@
+[
+  {
+    "id": "art1",
+    "title": "Moonlit Grove",
+    "description": "A serene forest under the full moon.",
+    "tags": ["nature", "night", "digital"],
+    "artist": "Jamie",
+    "date_uploaded": "2025-06-01T22:30:00Z",
+    "image_url": "/mock_images/artworks/wat.PNG"
+  },
+  {
+    "id": "art2",
+    "title": "Cyber Skyline",
+    "description": "A futuristic cityscape at dusk.",
+    "tags": ["sci-fi", "city", "sunset"],
+    "artist": "Ravi",
+    "date_uploaded": "2025-06-03T19:45:00Z",
+    "image_url": "/mock_images/artworks/wooper-wooper-wooper.png"
+  },
+  {
+    "id": "art3",
+    "title": "Garden Spirits",
+    "description": "Whimsical spirits floating through a blooming garden.",
+    "tags": ["fantasy", "flowers", "light"],
+    "artist": "Alex",
+    "date_uploaded": "2025-06-05T14:15:00Z",
+    "image_url": "/mock_images/artworks/wow.png"
+  }
+]
