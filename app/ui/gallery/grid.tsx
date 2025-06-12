@@ -107,6 +107,11 @@ export default function ArtworkGrid({ artworks }: { artworks: Artwork[] }) {
                     {tag}
                   </span>
                 ))}
+                {artwork.tags.length > 3 && (
+                  <span className="inline-block px-2 py-1 text-xs text-gray-400">
+                    +{artwork.tags.length - 3} more
+                  </span>
+                )}
               </div>
             </div>
           </div>

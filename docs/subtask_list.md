@@ -12,9 +12,9 @@
 | 3.1 | Supabase Image Upload Integration       | 4     | 2             | Done                  | 1 (1.2)           | Upload function and metadata insertion complete                 |
 | 3.2 | Responsive Gallery Grid View            | 3     | 3             | Done (mock data only) | 0                 | Working UI using local JSON, ready to wire to Supabase          |
 | 3.3 | Detail View/Modal                       | 3     | 1             | Done (mock data only) | 2 (3.1, 3.2)      | UI finished; needs live data wiring                             |
-| 4.1 | Filter UI Implementation                | 4     | 3             | In Progress           | 0                 | Filter dropdowns built, connecting logic next                   |
-| 4.2 | Basic Search Bar                        | 3     | 2             | Not Started           | 0                 | Will search local/mock or Supabase titles + descriptions        |
-| 5.1 | Tailwind CSS Integration                | 2     | 1             | Not Started           | 0                 | Placeholder styling complete, full layout pass pending          |
+| 4.1 | Filter UI Implementation                | 4     | 3             | Done (mock data only) | 0                 | Filter UI and logic working with local data                     |
+| 4.2 | Basic Search Bar                        | 3     | 2             | Done (mock data only) | 0                 | Search functionality working with mock data                      |
+| 5.1 | Tailwind CSS Integration                | 2     | 1             | In Progress           | 0                 | Placeholder styling complete, full layout pass pending          |
 | 5.2 | Mobile Layout Refinement                | 3     | 1             | Not Started           | 1 (5.1)           | Responsive tweaks to layout after main UI is styled             |
 | 5.3 | Image Optimization                      | 3     | 2             | Not Started           | 1 (3.1)           | Uses Next.js Image and responsive loading setup                 |
 | 6.1 | Initial Vercel Deployment               | 2     | 1             | Not Started           | 1 (1.3)           | Deploy test version once core gallery and upload are live       |
