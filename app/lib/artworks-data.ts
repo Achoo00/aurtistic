@@ -13,7 +13,8 @@ function getBaseUrl() {
 }
 
 export async function fetchArtworks() {
-  let jsonData;
+    console.log("DEBUG: ***EXECUTING NEW FETCHARTWORKS LOGIC***");
+    let jsonData;
 
   try {
     const filePath = path.join(process.cwd(), 'public', 'mock_images', 'artworks', 'mock_artworks.json');
