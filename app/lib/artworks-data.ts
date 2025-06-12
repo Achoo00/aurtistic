@@ -1,29 +1,35 @@
-// app/lib/fetchArtworks.ts
+// app/lib/artworks-data.ts
 
-// Helper function to get the base URL dynamically
 function getBaseUrl() {
-    // Check if window (browser environment) is defined
-    if (typeof window !== 'undefined') {
-        return window.location.origin; // e.g., "http://localhost:3000" or "https://your-domain.com"
-    }
-    // If not in the browser, use the server-side environment variable
-    // NEXT_PUBLIC_BASE_URL is accessible on both client and server
-    return process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'; // Fallback for safety
+  // If in the browser, use the current origin
+  if (typeof window !== 'undefined') {
+    return window.location.origin;
+  }
+
+  // If during a Vercel build or runtime, Vercel provides specific environment variables
+  // VERCEL_URL gives you the deployment URL (e.g., your-project.vercel.app)
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+
+  // Fallback for local development if NEXT_PUBLIC_BASE_URL isn't set,
+  // or for general Node.js environments
+  return process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 }
 
-// This will be replaced with actual Supabase queries later
+
 export async function fetchArtworks() {
-    // Construct the full URL for the static JSON file
-    const url = `${getBaseUrl()}/mock_images/artworks/mock_artworks.json`;
+  // Use getBaseUrl() to form a complete URL for the static JSON file
+  // This ensures it's always a valid HTTP/HTTPS URL
+  const url = `${getBaseUrl()}/mock_images/artworks/mock_artworks.json`; // <--- Use getBaseUrl() here
 
-    console.log("Fetching artworks from:", url); // Add a log to confirm the URL
+  console.log("Fetching artworks from:", url); // This will now show the full URL
 
-    const response = await fetch(url);
+  const response = await fetch(url);
 
-    if (!response.ok) {
-        // It's good practice to throw an error if the fetch fails
-        throw new Error(`Failed to fetch artworks: ${response.statusText}`);
-    }
-    const artworks = await response.json();
-    return artworks;
+  if (!response.ok) {
+    throw new Error(`Failed to fetch artworks: ${response.statusText} from ${url}`);
+  }
+  const artworks = await response.json();
+  return artworks;
 }
