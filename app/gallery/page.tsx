@@ -1,10 +1,11 @@
 // app/gallery/page.tsx
-import { Suspense } from 'react'; // Import Suspense from React
-import { fetchArtworks } from '@/app/lib/artworks-data'; // Your data fetching is now fixed!
-import ArtworkGrid from '@/app/ui/gallery/grid'; // Import your client component
 
-// This component is a Server Component by default
+import { Suspense } from 'react';
+import { fetchArtworks } from '@/app/lib/artworks-data';
+import ArtworkGrid from '@/app/ui/gallery/grid';
+
 export default async function GalleryPage({
+  // Keep searchParams in props for type safety, but AVOID accessing its properties here.
   searchParams,
 }: {
   searchParams?: {
@@ -12,8 +13,14 @@ export default async function GalleryPage({
     page?: string;
   };
 }) {
-  const query = searchParams?.query || '';
-  const currentPage = Number(searchParams?.page) || 1;
+  // --- REMOVE THESE LINES ---
+  // const query = searchParams?.query || '';
+  // const currentPage = Number(searchParams?.page) || 1;
+  // const resolvedSearchParams = Object.assign({}, searchParams);
+  // const { query, page } = resolvedSearchParams;
+  // const currentQuery = query || '';
+  // const currentPage = Number(page || '1');
+  // --- END REMOVED LINES ---
 
   // Your fetchArtworks is now correctly reading from the filesystem during prerendering
   const artworks = await fetchArtworks();
@@ -21,19 +28,11 @@ export default async function GalleryPage({
   return (
     <main>
       <h1>Our Art Gallery</h1>
-      {/*
-        You can pass searchParams directly from the Server Component to
-        the Client Component if the Client Component needs them without
-        using useSearchParams internally. Or, as in your current grid.tsx,
-        the Client Component can use useSearchParams itself.
-        The key is the <Suspense> boundary.
-      */}
-
-      {/* Wrap the ArtworkGrid Client Component with Suspense */}
       <Suspense fallback={<div>Loading gallery content...</div>}>
         {/*
-          Pass the artworks prop to your ArtworkGrid.
-          The searchParams are handled by useSearchParams *inside* ArtworkGrid.
+          Pass ONLY the `artworks` prop to ArtworkGrid.
+          ArtworkGrid will use its own `useSearchParams()` to get query and page,
+          which is already client-side safe within a Suspense boundary.
         */}
         <ArtworkGrid artworks={artworks} />
       </Suspense>
