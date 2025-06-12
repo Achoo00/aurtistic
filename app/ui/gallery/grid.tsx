@@ -1,8 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import { useSearchParams } from 'next/navigation';
 import ArtworkModal from './artwork-modal';
+import Filters from './filters';
+import SearchBar from './search';
 
 interface Artwork {
   id: string;
@@ -14,13 +17,70 @@ interface Artwork {
   image_url: string;
 }
 
+interface Filters {
+  artists: string[];
+  tags: string[];
+  dateRange: string | null;
+}
+
 export default function ArtworkGrid({ artworks }: { artworks: Artwork[] }) {
   const [selectedArtwork, setSelectedArtwork] = useState<Artwork | null>(null);
+  const [activeFilters, setActiveFilters] = useState<Filters>({
+    artists: [],
+    tags: [],
+    dateRange: null,
+  });
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get('query')?.toLowerCase() || '';
+
+  // Filter and search artworks
+  const filteredArtworks = useMemo(() => {
+    return artworks.filter((artwork) => {
+      // Search filter
+      if (searchQuery) {
+        const matchesSearch = 
+          artwork.title.toLowerCase().includes(searchQuery) ||
+          artwork.description.toLowerCase().includes(searchQuery);
+        if (!matchesSearch) return false;
+      }
+
+      // Artist filter
+      if (activeFilters.artists.length > 0 && !activeFilters.artists.includes(artwork.artist)) {
+        return false;
+      }
+
+      // Tags filter (artwork must have at least one selected tag)
+      if (activeFilters.tags.length > 0 && !artwork.tags.some(tag => activeFilters.tags.includes(tag))) {
+        return false;
+      }
+
+      // Date filter
+      if (activeFilters.dateRange) {
+        const artworkDate = new Date(artwork.date_uploaded);
+        const artworkMonth = `${artworkDate.toLocaleString('default', { month: 'long' })} ${artworkDate.getFullYear()}`;
+        if (artworkMonth !== activeFilters.dateRange) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+  }, [artworks, activeFilters, searchQuery]);
 
   return (
-    <>
+    <div>
+      <div className="sticky top-0 z-10 bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 py-3">
+          <SearchBar />
+        </div>
+        <Filters 
+          artworks={artworks}
+          onFilterChange={setActiveFilters}
+        />
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-        {artworks.map((artwork) => (
+        {filteredArtworks.map((artwork) => (
           <div
             key={artwork.id}
             className="relative group bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer"
@@ -58,6 +118,6 @@ export default function ArtworkGrid({ artworks }: { artworks: Artwork[] }) {
         isOpen={selectedArtwork !== null}
         onClose={() => setSelectedArtwork(null)}
       />
-    </>
+    </div>
   );
 }
